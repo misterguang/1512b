@@ -31,9 +31,6 @@ router.beforeEach((to,from,next)=>{
   }
 })
 
-
-
-
 new Vue({
   el:"#root",
   router,
