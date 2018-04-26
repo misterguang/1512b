@@ -12,14 +12,25 @@
 
   
 export default {
-  name: 'back_main',
+  name: 'back_index',
   data () {
     return {
 		
     }
   },
   methods:{
-    
+      
+  },
+  mounted () {
+    // fetch("http://localhost:9999/api/back/class/test",{
+    //     method:"post",
+    //     headers:new Headers({
+    //       "Content-type":"application/json",
+    //     }),
+    //     body:JSON.stringify({name:22,age:24})
+    // }).then((data)=>{
+    //   console.log(data)
+    // })
   }
 
 }

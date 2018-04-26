@@ -19,17 +19,17 @@
           <el-menu-item index="3-2"><router-link :to='{path:"/back/api_list",query:{type:"font"}}'>前台接口</router-link></el-menu-item>
           <el-menu-item index="3-3"><router-link :to='{path:"/back/api_list",query:{type:"back"}}'>后台接口</router-link></el-menu-item>
       </el-submenu>
-      <el-submenu index="4">
+      <!-- <el-submenu index="4">
        <template slot="title"><i class="el-icon-message"></i>留言板</template>
        <el-menu-item index="4-1"><router-link to="/send_email">留言</router-link></el-menu-item>
           
-      </el-submenu>
+      </el-submenu> -->
     </el-menu>
 </template>
 
 <script>
 export default {
-  name: 'head',
+  name: 'asides',
   data () {
     return {
         

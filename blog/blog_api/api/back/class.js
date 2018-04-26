@@ -167,12 +167,12 @@ router.post("/deleteClassOne",(req,res,next)=>{
 
 function deleteLastTwoClass(req,res,next){
   let {oneId,twoId,enname_one}=req.body
-  let sqlone=`delete * from one_class where id='${oneId}'`
-  let sqltwo=`delete * from two_class where parent_id='${oneId}'`
+  let sqlone=`delete from one_class where id='${oneId}'`
+  let sqltwo=`delete from two_class where parent_id='${oneId}'`
   let deleteTable=`drop table ${enname_one}`
       async function sqlAllHandle() { 
-          await sqlHandle(sqlone);
-          await sqlHandle(sqltwo);
+          await query(sqlone);
+          await query(sqltwo);
           await query(deleteTable)
           return {
             code:"2051",
@@ -193,11 +193,11 @@ function deleteLastTwoClass(req,res,next){
 
 function deleteTwoClass(req,res,next){
   let {oneId,twoId,enname_one}=req.body
-  let deleteTwo=`delete * from two_class where id='${twoId}'`
-  let deleteArticle=`delete * from ${enname_one} where twoId='${twoId}'`
+  let deleteTwo=`delete from two_class where id='${twoId}'`
+  let deleteArticle=`delete from ${enname_one} where twoId='${twoId}'`
       async function sqlAllHandle() { 
-          await sqlHandle(deleteTwo);
-          await sqlHandle(deleteArticle);
+          await query(deleteTwo);
+          await query(deleteArticle);
           return {
             code:"2051",
             msg:"获取数据成功",
@@ -231,17 +231,17 @@ router.post("/deleteClassTwo",(req,res,next)=>{
 
   // 更改一级分类
 router.post("/amendClassOne",(req,res,next)=>{
-  let {oldenname_one,enname_one,cnname_one}=req.body
+  let {oldenname,enname,cnname}=req.body
   
-  if(oldenname_one,enname_one,cnname_one){
-        let amendArticleTable=`alter table ${oldenname_one} rename ${enname_one}`
-        let amendClassOne=`update one_class set enname='${enname_one}',cnname='${cnname_one}'`
+  if(oldenname,enname,cnname){
+        let amendArticleTable=`alter table ${oldenname} rename ${enname}`
+        let amendClassOne=`update one_class set enname='${enname}',cnname='${cnname}'`
         async function sqlAllHandle() { 
           await sqlHandle(amendClassOne);
           await sqlHandle(amendArticleTable);
           return {
             code:"2061",
-            msg:"获取数据成功",
+            msg:"数据修改成功",
           }
        }
        sqlAllHandle().then((data)=>{
@@ -249,7 +249,7 @@ router.post("/amendClassOne",(req,res,next)=>{
        }).catch((err)=>{
           res.send({
             code:"2062",
-            msg:"获取数据失败"
+            msg:"数据修改失败"
           })
        })   
 
@@ -259,17 +259,17 @@ router.post("/amendClassOne",(req,res,next)=>{
 
 // 更改二级分类
 router.post("/amendClassTwo",(req,res,next)=>{
-  let {oldenname_two,enname_two,cnname_two}=req.body
+  let {enname,cnname}=req.body
   
-  if(oldenname_two,enname_two,cnname_two){
+  if(enname,cnname){
        
-        let amendClassTwo=`update two_class set enname='${enname_two}',cnname='${cnname_two}'`
+        let amendClassTwo=`update two_class set enname='${enname}',cnname='${cnname}'`
         async function sqlAllHandle() { 
           await sqlHandle(amendClassTwo);
        
           return {
             code:"2071",
-            msg:"获取数据成功",
+            msg:"数据修改成功",
           }
        }
        sqlAllHandle().then((data)=>{
@@ -277,11 +277,16 @@ router.post("/amendClassTwo",(req,res,next)=>{
        }).catch((err)=>{
           res.send({
             code:"2072",
-            msg:"获取数据失败"
+            msg:"数据修改失败"
           })
        })   
 
   } 
 })
 
+
+router.post("/test",(req,res,next)=>{
+  console.log(req.body)
+  res.send("sdf")
+})
 module.exports=router

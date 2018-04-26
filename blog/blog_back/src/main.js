@@ -16,7 +16,15 @@ Vue.use(ElementUI);
 import vueAxios from "vue-axios"
 import axios from "axios"
 
+
 Vue.use(vueAxios,axios)
+
+
+import './static/Ueditor/ueditor.config.js'
+import './static/Ueditor/ueditor.all.min.js'
+import './static/Ueditor/lang/zh-cn/zh-cn.js'
+import './static/Ueditor/ueditor.parse.js'
+
 
 
 router.beforeEach((to,from,next)=>{

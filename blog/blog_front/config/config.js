@@ -33,19 +33,39 @@ module.exports = {
     assetsSubDirectory: 'static', //静态文件拷贝路径，注意这里使用相对dist文件夹的目录名
     assetsPublicPath: '/',
     souceMap:"cheap-module-eval-source-map",
-    proxyTable: {},
+    // souceMap:false,
+    proxyTable: {
+      "/api":"http://localhost:9999/"
+    },
     middleWare:function(app){
-        app.get("/api",function(req,res,next){
-          res.send("1234")
+        app.get("/apis1",function(req,res,next){
+          res.send({
+            obj:{
+              name:"index1页面"
+            }
+          })
+        })
+        app.get("/apis2",function(req,res,next){
+          res.send({
+            obj:{
+              name:"index2页面"
+            }
+          })
         })
     }
   },
   babel:{
     "presets":[
-        "env" 
+      ["env", {
+        "modules": false,
+        "targets": {
+          "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
+        }
+      }]
+      // "stage-2"
     ],
     "plugins": [
-      
+      "transform-object-rest-spread"
     ]
   }
 }

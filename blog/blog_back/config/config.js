@@ -27,7 +27,7 @@ module.exports = {
     entry:'./src/main.js',
     index: path.resolve(__dirname, '../src/index.html'), //入口html的地址
     output:"js",  //输出
-    port: 8080,
+    port: 9998,
     host:"localhost",
     autoOpenBrowser: true,
     assetsSubDirectory: 'static', //静态文件拷贝路径，注意这里使用相对dist文件夹的目录名
@@ -35,7 +35,8 @@ module.exports = {
     // souceMap:"cheap-module-eval-source-map",
     souceMap:false,
     proxyTable: {
-      "/api":"http://localhost:9999/"
+      "/api":"http://localhost:9999/",
+      "/ueditor":"http://localhost:9999/"
     },
     middleWare:function(app){
         app.get("/api",function(req,res,next){

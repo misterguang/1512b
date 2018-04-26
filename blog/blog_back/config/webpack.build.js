@@ -43,7 +43,7 @@ module.exports = {
           }),
         },
         {
-          test:/\.(jpg|png|gif)$/,
+          test:/\.(jpg|png|gif|ttf|woff|eot|svg)$/,
           use:["url-loader"],
         },
         {
@@ -55,7 +55,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue'],//省略后缀名
     alias: {
-        "vue": "vue/dist/vue.js"
+        "vue": "vue/dist/vue.js",
+        "@":path.join(__dirname,"../src")
     }
   },
   devtool: config.build.souceMap,
