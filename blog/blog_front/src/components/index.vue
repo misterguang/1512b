@@ -10,23 +10,23 @@
           </el-col>
           <el-col :span="7">
               <div class="grid-content ">
-                  <!-- <search></search>
+                  <search></search>
                   <top></top>
-                  <news></news> -->
+                  <news></news>
               </div>
           </el-col>
       </el-row>
-      <!-- <footers></footers> -->
+      <footers></footers>
   </div>
   </template>
   <script>
       import breadcast from "./breadcast";
       import header from "./header"
       import store from "../store/index"
-      // import search from "./search"
-      // import top from "./top"
-      // import news from "./new"
-      // import footers from "./footer"
+      import search from "./search"
+      import top from "./top"
+      import news from "./new"
+      import footers from "./footer"
       // import action_type from "../store/action_type"
       import {
           mapState,
@@ -54,10 +54,10 @@
           components: {
               breadcast: breadcast,
               headertop: header,
-              // search: search,
-              // top: top,
-              // news: news,
-              // footers: footers
+              search: search,
+              top: top,
+              news: news,
+              footers: footers
   
           },
           beforeRouteEnter(to, from, next){

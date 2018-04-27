@@ -25,37 +25,45 @@ module.exports = {
   module:{
       rules:[
         {
-          test:/\.js$/,
-          use:[{
-            loader:"babel-loader",
-            options:config.babel
+          test: /\.js$/,
+          use: [{
+            loader: "babel-loader",
+            options: config.babel
+          }],
+  
+        },
+        {
+          test: /\.vue$/,
+          use: [{
+            loader: "vue-loader",
+            options: {
+              loaders: {
+                js: [
+                  { loader: 'babel-loader', options: config.babel}
+                ]
+              }
+            }
           }],
         },
         {
-          test:/\.vue$/,
-          use:["vue-loader"],
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
         },
         {
-          test:/\.css$/,
-          use: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: ['css-loader']
-          }),
+          test: /\.(jpg|png|gif|ttf|woff|eot|svg)$/,
+          use: ["url-loader"],
         },
         {
-          test:/\.(jpg|png|gif)$/,
-          use:["url-loader"],
-        },
-        {
-          test:/\.html$/,
-          use:["html-loader"],
+          test: /\.html$/,
+          use: ["html-loader"],
         }
       ]
   },
   resolve: {
     extensions: ['.js', '.vue'],//省略后缀名
     alias: {
-        "vue": "vue/dist/vue.js"
+        "vue": "vue/dist/vue.js",
+        "@": path.join(__dirname, "../src")
     }
   },
   devtool: config.build.souceMap,

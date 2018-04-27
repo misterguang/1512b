@@ -155,19 +155,26 @@ router.get("/getArticle", function(req, res, next) {
          return selectArtSql
     }
     // 更新文章读取量
-    const connectUpdataSql=(oneClass)=>{
+    const connectUpdataSql=(articleData,oneClass)=>{
+        console.log(articleData[0])
         if(articleData.length>0){
-            let sql=`CREATE VIEW all_article_table(id,visitors) AS SELECT id,visitors FROM `
-            oneClass.forEach((i,index)=>{
-                sql+=`${i.enname} `
-            })
+            let one_class=oneClass.filter((i)=>{
+                return i.id==articleData[0].oneId
+            })  
+            if(one_class.length>0){
+                let oneenname=one_class[0].enname
+                let sql=`update ${oneenname} set visitors=visitors+1 where id='${articleData[0].id}'`
+                console.log(sql)
+                return sql
+            }
+            
            
         }
     }
     const asyncGetArticle=async function(){
         let oneClass=await  readHandle(sqlone)
         let articleData=await  readHandle(connectSql(oneClass))
-        // let articleData=await  sqlHandle(connectUpdataSql(oneClass))
+        let state=await  sqlHandle(connectUpdataSql(articleData,oneClass))
         return articleData
     }
 
