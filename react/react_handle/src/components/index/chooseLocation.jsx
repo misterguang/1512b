@@ -11,22 +11,74 @@ import ChooseNav from "../common/chooseNav"
 import asyncGetDataComponent from "../hoc/asyncGetDataComponent"
 import Getlocations from "../hoc/Getlocations"
 
+import Store,{AddCityList,GetLocation,DeleteLocation} from "../../store"
+
 class ChooseLocation extends Component {
   constructor(props) {
     super(props)
-    console.log(111111)
     console.log(this.props)
-    this.state={
-      cityList:this.props.getData[0],
-      locations:[]
+    if(this.props.getData){
+      this.props.dispatch(AddCityList(this.props.getData[0]))
+      console.log(this.props.getData[0])
     }
+    // console.log(this.props.cityList)
+    // this.state={
+    //   cityList:this.props.getData[0]||this.props.cityList,
+    // }
   }
- 
+  
+  chooseHandle(e,item){
+      let $index=null
+     let state=this.props.locationAddress.every((i,index)=>{
+        if(i.id==item.id){
+          $index=index
+          return false
+        }else{
+          return true
+        }
+     })
+     if(state){
+      this.props.dispatch(GetLocation(item))
+     }else{
+      this.props.dispatch(DeleteLocation($index))
+     }  
+     
+    
+  }
+  deleteHandle(item){
+    let $index=null
+     this.props.locationAddress.every((i,index)=>{
+        if(i.id==item.id){
+          $index=index
+          return false
+        }else{
+          return true
+        }
+     })
+     this.props.dispatch(DeleteLocation($index))
+  }
   render() {
     // 渲染城市列表
-    const $el = this.state.cityList.map((i, index) => {
+    const $el = 
+    this.props.cityList.map((i, index) => {
+
+      
       const $li = i.city.map((j, jIndex) => {
-        return <p key={j.id} ref={j.id} id={j.id} className={style.cityList} onClick={(e)=>{this.chooseHandle(e,j)}}>{j.name}</p>
+        
+        let state=this.props.locationAddress.some((k,jindex)=>{
+          if(j.id==k.id){
+            return true  
+          }else{
+            return false
+          }
+        })
+        let el=null
+        if(state){
+          el=<p key={j.id} ref={j.id} id={j.id} className={style.cityList+" "+style.chooseCityClass} onClick={(e)=>{this.chooseHandle(e,j)}}>{j.name}</p>
+        }else{
+          el=<p key={j.id} ref={j.id} id={j.id} className={style.cityList} onClick={(e)=>{this.chooseHandle(e,j)}}>{j.name}</p>
+        }
+        return el
       })
       return <section key={index} className={style.sectionList} id="cityList">
         <h4 >{i.letter}</h4>
@@ -69,6 +121,16 @@ class ChooseLocation extends Component {
 let select=(state)=>{
   return {...state}
 }
+
+// let exportCom=null
+// console.log(Store.getState().locationAddress.length>0&&Store.getState().cityList.length>0)
+// if(Store.getState().locationAddress.length>0&&Store.getState().cityList.length>0){
+  
+//   exportCom=connect(select)(ChooseLocation)
+// }else{
+ 
+//   exportCom=asyncGetDataComponent(Getlocations(connect(select)(ChooseLocation)),[{url:"/api/cityList",type:"get"}])
+// }
 
 export default asyncGetDataComponent(Getlocations(connect(select)(ChooseLocation)),[{url:"/api/cityList",type:"get"}])
 

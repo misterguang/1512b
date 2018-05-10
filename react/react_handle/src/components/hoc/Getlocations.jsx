@@ -24,7 +24,7 @@ import Store,{GetLocation} from "../../store"
             return i.name.includes(city)
           })
         })
-        console.log(this.props)
+        
         Store.dispatch(GetLocation(data))
         this.setState({
           Com:com,
@@ -32,18 +32,26 @@ import Store,{GetLocation} from "../../store"
         })
     }
     componentWillMount(){
-      $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', () => {
-        this.dataHandle(remote_ip_info.city)
-       
+      if(Store.getState().locationAddress.length<=0){
+        $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', () => {
+          this.dataHandle(remote_ip_info.city)
+        
 
-        // formdata.city = remote_ip_info.city
-        // formdata.province = remote_ip_info.province
-        // formdata.country = remote_ip_info.country
-      })
+          // formdata.city = remote_ip_info.city
+          // formdata.province = remote_ip_info.province
+          // formdata.country = remote_ip_info.country
+        })
+      }else{
+        this.setState({
+          Com:com,
+         
+        })
+      }
+     
     }
     render(){
       const Com=this.state.Com
-      return Com?<Com {...this.props}  getLocationData={this.state.location}/>:null
+      return Com?<Com {...this.props} />:null
     }
   }
 }
