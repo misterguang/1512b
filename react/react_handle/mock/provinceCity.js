@@ -1907,4 +1907,14 @@ letter.forEach(function(item) {
 console.log(provinceArr)
 // console.log(cityArr)y
 
+Object.entries(city).forEach((i)=>{
+   var arr=i[1].map((j)=>{
+        if(j.name=="市辖区"){
+            j.name=j.province
+        }
+        return j
+    })
+    city[i[0]]=arr
+})
+
 module.exports= {provinceArr,city}

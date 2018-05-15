@@ -56,11 +56,15 @@ module.exports = {
           }, {
               loader: "css-loader"
           }, {
-              loader: "less-loader"
+              loader: "less-loader",
+              // 针对antd的form报错处理
+              options: {
+                javascriptEnabled: true
+            }
           }]
         },
       {
-        test: /\.(jpg|png|gif|ttf|woff|eot)$/,
+        test: /\.(jpg|png|gif|ttf|woff|eot|svg)$/,
         use: ["url-loader"]
       },
      

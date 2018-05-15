@@ -100,7 +100,7 @@ class ChooseLocation extends Component {
         <ChooseNav title="选择城市" {...this.props}/> 
         <section className={style.carAddress}>
           <span>您的上牌地址</span>
-          <aside><Link to="/chooseLicencePlate"> {this.props.licencePlate}<Icon type="right" /></Link></aside>
+          <aside><Link to="/chooseLicencePlate"> {this.props.licencePlate.name}<Icon type="right" /></Link></aside>
         </section>
         {/* 渲染选择的 */}
         <section className={style.cityAddress}>

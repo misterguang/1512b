@@ -2,7 +2,7 @@ var path = require("path")
 var api = require("../mock/index")
 module.exports = {
   base: {
-    entry: path.join(__dirname, "../src/main.js"),
+    entry: path.join(__dirname, "../src/main.jsx"),
     outputPath: path.join(__dirname, "../dist"),
     outputFileName: "[id]-[name]-[hash].js",
     templatePath: "./src/index.html",
@@ -37,6 +37,7 @@ module.exports = {
     presets: [
       // "env",
       ["env", { modules: false }],
+      "stage-0",
       "react"
     ],
     plugins: [["transform-runtime",

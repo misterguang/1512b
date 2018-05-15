@@ -10,9 +10,7 @@ class ChooseNav extends Component {
   constructor(props) {
     super(props)
     
-    this.state={
-      title:"选择城市"
-    }
+    
   }
   render() {
     return (

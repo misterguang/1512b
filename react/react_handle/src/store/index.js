@@ -3,7 +3,10 @@ import thunkMiddleware  from "redux-thunk"
 export * from "./actions"
 let initialState={
   locationAddress: [],
-  cityList:[]
+  cityList:[],
+  licencePlate:{},
+  carList:[],
+  orderType:""
 }
 
 let reducer=(state = initialState,actions)=>{
@@ -29,6 +32,37 @@ let reducer=(state = initialState,actions)=>{
       var aa=Object.assign({},state,{locationAddress:arr})
       return aa
     } break
+    case "ListenPlace":{
+     console.log(text)
+    
+    return Object.assign({},state,{licencePlate:text})
+  } break 
+  case "addCarList":{
+     console.log(text)
+     let arr=[]
+     text.forEach(function(i) {
+      i.forEach((j)=>{
+        j.carList.forEach((k)=>{
+          arr.push(k)
+        })
+        
+      })
+    }, this);
+    arr=arr.filter((i)=>{
+      return i.price!=""
+    })
+    return Object.assign({},state,{carList:arr})
+  } break 
+  case "amendCarList":{
+    
+    return Object.assign({},state,{carList:text})
+  } break
+
+  case "amendOrderType":{
+    
+    return Object.assign({},state,{orderType:text})
+  } break
+
     default:{
 
       return state

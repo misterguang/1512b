@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <ul>
+        <li>
+            头像：
+            <img src="<%=data.headimgurl%>" alt="" width="100" />
+        </li>
+        <li>
+            姓名：
+            <%= data.nickname%>
+        </li>
+        <li>
+            性别：
+            <%= data.sex%>
+        </li>
+        <li>
+            省份：
+            <%= data.province%>
+        </li>
+        <li>
+            城市：
+            <%= data.city%>
+        </li>
+        <li>
+            国家：
+            <%= data.country%>
+        </li>
+
+    </ul>
+</body>
+
+</html>

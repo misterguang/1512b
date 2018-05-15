@@ -2,70 +2,58 @@ import React, { Component } from 'react'
 import { Route, Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { NavBar, Icon, Flex } from 'antd-mobile';
-import store,{actions,INDEX_CHANGELICENCEPLATE} from "../../redux"
+
 import Foot from "../common/foot"
 import $ from "jquery"
 import style from "../../css/index.css"
 import ChooseNav from "../common/chooseNav"
+import asyncGetDataComponent from "../hoc/asyncGetDataComponent"
+import Getlocations from "../hoc/Getlocations"
+import {ListenPlace} from "../../store/index"
 class ChooseLocation extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      provinceList: [],
-      cityList: [],
-      showCityList:[],
-      classState:null
-    }
-    fetch("/provinceCity").then((data) => {
-      return data.json()
-    }).then((data) => {
-      console.log(data)
-      this.setState({
-        provinceList: data.provinceArr,
-        cityList: data.city,
-        classState:data.provinceArr[0].province[0].id,
-        showCityList:data.city[data.provinceArr[0].province[0].id]
-      })
-    })
 
-    console.log($("title").html("选择页"))
+    this.state={
+      provinceList:this.props.getData[1].provinceArr,
+      showCityList:this.props.getData[1].city[this.chooseDefaultlisten()],
+      classState:this.chooseDefaultlisten()
+    }
+    this.props.dispatch(ListenPlace(this.props.locationAddress[0]))
   }
-  // 点击省份，样式添加与删除
+  // 根据选车城市中的第一个选择上牌城市
+  chooseDefaultlisten(){
+      var keyItem=""
+      Object.entries(this.props.getData[1].city).forEach(function(i) {
+          i[1].forEach((j)=>{
+           if(j.id==this.props.locationAddress[0].id){
+              keyItem=i[0]
+            }
+          })
+      }, this);
+    return keyItem
+  }
+  // 根据省份选取城市
   provinceHandle(e,item){
       
-      const data=this.state.cityList[item.id]
-      if(data){
-        this.setState({
-          showCityList:data,
-          classState:item.id
-        })
-      }else{
-        this.setState({
-          showCityList:[{name:"无数据"}],
-          classState:item.id
-        })
-      }
-     
-  }
-  // 点击字母设置滚动条位置
-  scrollHandle(e,i,index){
-  //  设置滚动条的高度
-    this.refs.province.scrollTop=this.refs[i.letter].offsetTop-90
-
-    // 设置省份为当前字母下的第一个省份
-    console.log(index)
-    console.log(this.state.provinceList[index].province[0].id)
-    console.log(this.state.cityList[this.state.provinceList[index].province[0].id])
-    
-    this.setState({
-        classState:this.state.provinceList[index].province[0].id,
-        showCityList:this.state.cityList[this.state.provinceList[index].province[0].id]
+      this.setState({
+        classState:item.id,
+        showCityList:this.props.getData[1].city[item.id]||[item]
+      },()=>{
+        this.props.dispatch(ListenPlace(this.state.showCityList[0]))
       })
+      
   }
-  // 选择城市
-  chooseCityHandle(i){
-       store.dispatch(actions[INDEX_CHANGELICENCEPLATE](i.name))
+  // 点击城市时，改变上牌城市
+  chooseCityHandle (item){
+    this.props.dispatch(ListenPlace(item))
   }
+  scrollHandle(e,i,index){
+  
+    let el=this.refs[i.letter]
+    let num=el.offsetTop-90
+    this.refs.province.scrollTop=num
+  } 
   render() {
     // 渲染省份
     const $province = this.state.provinceList.map((i, index) => {
@@ -92,7 +80,7 @@ class ChooseLocation extends Component {
         <ChooseNav title="选择上牌城市" {...this.props} />
         <section className={style.cityAddressLicen}>
           <Flex wrap="wrap">
-            <p>{this.props.licencePlate}</p>
+            <p>{this.props.licencePlate.name}</p>
           </Flex>
         </section>
         <main className={style.licencePlateMain}>
@@ -117,7 +105,7 @@ const select = (state) => {
   return { ...state }
 }
 
-export default connect(select)(ChooseLocation)
+export default asyncGetDataComponent(Getlocations(connect(select)(ChooseLocation)),[{url:"/api/cityList",type:"get"},{url:"/api/provinceCity",type:"get"}])
 
 
 

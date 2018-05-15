@@ -13,7 +13,7 @@ const NavStyle = {
 
 import style from "../../css/buycar.css"
 
-class Index extends Component {
+class BuyCarNav extends Component {
   constructor(props) {
     super(props)
     
@@ -24,7 +24,7 @@ class Index extends Component {
     return (
       <NavBar
         mode="light"
-        icon={<p style={{ display: "flex", alignItem: "center" }}><Link to="/chooseLocation"><span>{this.props.locations[0].name}</span><Icon type="down" /></Link></p>}
+        icon={<p style={{ display: "flex", alignItem: "center" }}><Link to="/chooseLocation"><span>{this.props.locationAddress[0].name}</span><Icon type="down" /></Link></p>}
         onLeftClick={() => console.log('onLeftClick')}
         rightContent={[
           <Icon key="0" type="search" style={{ marginRight: '0.16rem',width:"1rem" }} />
@@ -33,16 +33,24 @@ class Index extends Component {
           <div className={style.searchCarInput}>
           <Icon type="search" size="xs" />
           <input type="text"/>
+          {/* <InputItem
+            {...getFieldProps('autofocus')}
+            clear
+            placeholder="auto focus"
+            ref={el => this.autoFocusInst = el}
+          >标题</InputItem> */}
           </div>
          
           
         </NavBar>
     )
+    // return null
   }
 }
 
-const BasicInputExampleWrapper = createForm()(Index);
+const BasicInputExampleWrapper = createForm()(BuyCarNav);
 
 export default BasicInputExampleWrapper
+// export default BuyCarNav
 
 
