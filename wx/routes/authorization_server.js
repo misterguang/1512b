@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+// 使用node-fetch请求微信后台接口
 var fetch = require("node-fetch")
 
 // 微信的配置
@@ -56,6 +57,7 @@ let getUserInfo = (tokenObj) => {
     })
 }
 
+// 做用户信息的缓存
 let userInfo = {
 
 }
@@ -63,9 +65,11 @@ let userInfo = {
 /* GET home page. */
 router.get('/', function(req, res, next) {
     let { code } = req.query
+    // 检测用户是否登录，且缓存用户列表中是否存在
     if (req.cookies.userId && userInfo[req.cookies.userId]) {
 
         res.render("authorization_server", { title: "authorization_server", data: userInfo[req.cookies.userId] })
+        // 如果code存在，则发起用户信息的请求
     } else if (code) {
         async function getDataAll(param) {
             let tokenObj = await getToken(code)
@@ -73,17 +77,17 @@ router.get('/', function(req, res, next) {
             return userInfo
         }
         getDataAll().then((data) => {
-            console.log(22222)
             userInfo = {
                 [data.openid]: data
             }
             res.cookie('userId', data.openid, { expires: new Date(Date.now() + 86400000), httpOnly: true });
             res.render("authorization_server", { title: "authorization_server", data })
         }).catch(() => {
+            // 如果在请求用户信息的过程中，存在错误，则重新进入授权页面
             res.redirect(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx_config.appid}&redirect_uri=${wx_config.redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE&t=${new Date().getTime()}#wechat_redirect`)
         })
 
-
+    // 重定向
     } else {
         res.redirect(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx_config.appid}&redirect_uri=${wx_config.redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE&t=${new Date().getTime()}#wechat_redirect`)
     }

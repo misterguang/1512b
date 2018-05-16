@@ -13,85 +13,113 @@
     <ul>
         <li>
             头像：
-            <img src="" alt="" width="100" />
+            <img src="" alt="" width="100" id="img" />
         </li>
         <li>
             姓名：
-            <span></span>
+            <span id="nickname"></span>
         </li>
         <li>
             性别：
-            <span></span>
+            <span id="sex"></span>
         </li>
         <li>
             省份：
-            <span></span>
+            <span id="province"></span>
         </li>
         <li>
             城市：
-            <span></span>
+            <span id="city"></span>
         </li>
         <li>
             国家：
-            <span></span>
+            <span id="country"></span>
         </li>
 
     </ul>
-    <script src="/javascripts/jquery.js"></script>
+    <script src=" /javascripts/jquery.js "></script>
     <script>
+        // 微信网页授权，获取token和用户信息，因为ajax的同源策略问题，和微信接口不支持jsonp原因，导致前端无法获取用户信息
+        // $(document).ready(() => {
+        //     // 微信的配置
+        //     let wx_config = {
+        //             appid: "wx5fb15a98caceeccd ",
+        //             redirect_uri: "http://wx.chenyuanguang.cn/authorization_client ",
+        //             secret: "0a2c26ca7d3bcfc38d5dafcb9b7a9f3f "
+        //         }
+        //         // 获取token
+        //     let getToken = () => {
+        //             let code = window.location.href.split("=")[1]
+        //             console.log(code)
+        //             return new Promise((resolve, reject) => {
+        //                 $.ajax({
+        //                     url: `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${wx_config.appid}&secret=${wx_config.secret}&code=${code}&grant_type=authorization_code`,
+        //                     type: " get ",
+        //                     dataType: "jsonp "
+        //                 }).then((data) => {
+
+        //                     console.log(data)
+        //                         // 验证code是否正确的换取token，如果code失效，则重定向重新换取code地址
+
+        //                     if (data.errcode) {
+        //                         reject(data)
+        //                     } else {
+        //                         resolve(data)
+        //                     }
+
+        //                 })
+        //             })
+        //         }
+        //         // 拉去用户信息
+        //     let getUserInfo = (tokenObj) => {
+
+        //         return new Promise((resolve, reject) => {
+        //             $.ajax({
+        //                 url: `https://api.weixin.qq.com/sns/userinfo?access_token=${tokenObj.access_token}&openid=${tokenObj.openid}&lang=zh_CN`,
+        //                 type: "get "
+        //             }).then((data) => {
+        //                 console.log(data)
+        //                 resolve(data)
+        //             })
+        //         })
+        //     }
+
+        //     async function getDataAll(param) {
+        //         let tokenObj = await getToken()
+        //         let userInfo = await getUserInfo(tokenObj)
+        //         return userInfo
+        //     }
+        //     getDataAll().then((data) => {
+        //         console.log(data)
+
+        //     }).catch((err) => {
+        //         console.log(err)
+        //     })
+        // })
+
+        // 在前端获取code，将code发送到后台接口，用户信息的获取交给后台处理
         $(document).ready(() => {
-            // 微信的配置
-            let wx_config = {
-                    appid: "wx5fb15a98caceeccd",
-                    redirect_uri: "http://wx.chenyuanguang.cn/authorization_client",
-                    secret: "0a2c26ca7d3bcfc38d5dafcb9b7a9f3f"
+
+            $.ajax({
+                url: "http://wx.chenyuanguang.cn/authorization_client/api/getUserInfo",
+                type: "get",
+                data: {
+                    code: window.location.href.split("=")[1]
                 }
-                // 获取token
-            let getToken = () => {
-                    let code = window.location.href.split("=")[1]
-                    console.log(code)
-                    return new Promise((resolve, reject) => {
-                        $.ajax({
-                            url: `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${wx_config.appid}&secret=${wx_config.secret}&code=${code}&grant_type=authorization_code`,
-                            type: "get"
-                        }).then((data) => {
-
-                            console.log(data)
-                                // 验证code是否正确的换取token，如果code失效，则重定向重新换取code地址
-
-                            if (data.errcode) {
-                                reject(data)
-                            } else {
-                                resolve(data)
-                            }
-
-                        })
-                    })
-                }
-                // 拉去用户信息
-            let getUserInfo = (tokenObj) => {
-
-                return new Promise((resolve, reject) => {
-                    $.ajax({
-                        url: `https://api.weixin.qq.com/sns/userinfo?access_token=${tokenObj.access_token}&openid=${tokenObj.openid}&lang=zh_CN`,
-                        type: "get"
-                    }).then((data) => {
-                        console.log(data)
-                        resolve(data)
-                    })
-                })
-            }
-
-            async function getDataAll(param) {
-                let tokenObj = await getToken()
-                let userInfo = await getUserInfo(tokenObj)
-                return userInfo
-            }
-            getDataAll().then((data) => {
+            }).then((data) => {
                 console.log(data)
+                if (data.code == "10001") {
+                    $("#img").attr("src", data.data.headimgurl)
+                    $("#nickname").html(data.data.nickname)
+                    $("#province").html(data.data.province)
+                    $("#city").html(data.data.city)
+                    $("#country").html(data.data.country)
+                    $("#sex").html(data.data.sex)
+                } else {
+                    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5fb15a98caceeccd&redirect_uri=http://wx.chenyuanguang.cn/authorization_client&response_type=code&scope=snsapi_userinfo&state=STATE&t=1526366248348#wechat_redirect
+`
+                }
 
-            }).catch((err) => {
-                console.log(err)
             })
         })
     </script>
