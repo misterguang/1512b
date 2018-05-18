@@ -1,0 +1,12 @@
+小程序文章获取：
+https://miniapp.chenyuanguang.cn/api/front/miniApp/getArticleAll
+
+小程序文章分类获取：
+https://miniapp.chenyuanguang.cn/api/front/miniApp/getNav
+
+小程序根据不同的一级类名获取相应的二级类名
+https://miniapp.chenyuanguang.cn/api/front/miniApp/getClassTwo
+
+小程序根据id获取文章详情
+
+https://miniapp.chenyuanguang.cn/api/front/miniApp/getArticle
